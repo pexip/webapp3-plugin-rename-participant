@@ -14,10 +14,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@pexip/components": "^16.17.0",
     "@pexip/plugin-api": "20.0.0",
-    "webapp3-plugin-select-cart": "file:",
-    "webapp3-select-cart-plugin": "file:"
+    "webapp3-plugin-select-cart": "file:"
   },
   "devDependencies": {
     "eslint": "^9.14.0",
