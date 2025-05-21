@@ -1,0 +1,67 @@
+name: Build Plugin
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      zip_name: ${{ steps.zipname.outputs.zip_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Plugin
+        run: npm run build
+
+      - name: Set zip name
+        id: zipname
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          ZIP_NAME="${REPO_NAME}.zip"
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+          echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
+
+      - name: Zip build output
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          mv dist "$REPO_NAME"
+          zip -r "$ZIP_NAME" "$REPO_NAME"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-zip
+          path: ${{ env.ZIP_NAME }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-zip
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ needs.build.outputs.zip_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
