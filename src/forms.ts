@@ -13,4 +13,3 @@ export const RenameForm = (participantName: string) =>
       submitBtnTitle: 'Rename'
     }
   }) as const
-
