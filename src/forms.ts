@@ -6,7 +6,7 @@ export const RenameForm = (participantName: string) =>
     form: {
       elements: {
         name: {
-          name: 'Enter new displayname',
+          name: 'Enter new display name',
           type: 'text'
         }
       },
