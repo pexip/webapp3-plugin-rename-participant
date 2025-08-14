@@ -16,6 +16,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Updated dependencies to the latest versions.
 - Subscribe to event `participantsActivities` instead of `participants`.
 - Use the participant `uuid` instead of `identity` for renaming participants.
+- Rename `displayname` to `display name` in the rename participant form.
 
 ## [1.0.0] - 2025-05-21
 
