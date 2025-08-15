@@ -61,7 +61,7 @@ const applySetup = async (): Promise<void> => {
       const input = await plugin.ui.showForm(RenameForm(clickedParticipantName))
       const { name } = input
 
-      if (name !== '') {
+      if (name) {
         await plugin.conference.setTextOverlay({
           participantUuid: clickedParticipant.participantUuid,
           text: name
