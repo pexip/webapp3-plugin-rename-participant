@@ -1,6 +1,6 @@
 {
   "name": "webapp3-rename-participant-plugin",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "dependencies": {
-    "@pexip/plugin-api": "21.1.2"
+    "@pexip/plugin-api": "22.1.0"
   },
   "devDependencies": {
     "eslint": "^9.33.0",

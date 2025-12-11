@@ -71,6 +71,15 @@ const applySetup = async (): Promise<void> => {
   }
 }
 
+// Type guard to check if activity uses 'activity' or 'type' property
+// activity was replaced by tpye in later versions of the API
+const getActivityType = (
+  activity:
+    | { activity: ParticipantActivities }
+    | { type: ParticipantActivities }
+): ParticipantActivities =>
+  'activity' in activity ? activity.activity : activity.type
+
 // Initial setup
 await applySetup()
 
@@ -78,10 +87,11 @@ await applySetup()
 plugin.events.participantsActivities.add(async (roomParticipantActivities) => {
   roomParticipantActivities.forEach((roomParticipantActivity) => {
     const { roomId, activity } = roomParticipantActivity
+
     if (roomId !== 'main') {
       return
     }
-    switch (activity.activity) {
+    switch (getActivityType(activity)) {
       case ParticipantActivities.Join:
         participantsList.push(activity.participant)
         break
