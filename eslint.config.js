@@ -14,6 +14,6 @@ export default [
     files: ["**/*.tsx", "**/*.ts"],
   },
   {
-    ignores: ['dist', 'eslint.config.js', 'vite.config.ts', 'utils'],
+    ignores: ['dist', 'eslint.config.js', 'vite.config.ts'],
   }
 ]

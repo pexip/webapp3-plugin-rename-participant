@@ -1,15 +1,16 @@
+import { i18next } from './i18n'
+
 export const RenameForm = (participantName: string) =>
   ({
-    title: `Rename ${participantName}`,
-    description:
-      'You can rename the participant by entering a new name in the field below.',
+    title: i18next.t('title', { participantName }),
+    description: i18next.t('description'),
     form: {
       elements: {
         name: {
-          name: 'Enter new display name',
+          name: i18next.t('inputLabel'),
           type: 'text'
         }
       },
-      submitBtnTitle: 'Rename'
+      submitBtnTitle: i18next.t('submitButton')
     }
   }) as const

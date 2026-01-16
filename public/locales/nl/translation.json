@@ -1,0 +1,7 @@
+{
+  "rename": "Hernoemen",
+  "title": "{{participantName}} hernoemen",
+  "description": "Je kunt de deelnemer hernoemen door een nieuwe naam in het tekstveld in te voeren.",
+  "inputLabel": "Voer een nieuwe weergavenaam in",
+  "submitButton": "Hernoemen"
+}

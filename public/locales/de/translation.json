@@ -1,0 +1,7 @@
+{
+  "rename": "Umbenennen",
+  "title": "{{participantName}} umbenennen",
+  "description": "Sie können den Teilnehmer umbenennen, indem Sie in das Textfeld einen neuen Namen eingeben.",
+  "inputLabel": "Neuen Anzeigenamen eingeben",
+  "submitButton": "Umbenennen"
+}

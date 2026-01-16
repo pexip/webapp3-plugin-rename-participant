@@ -1,0 +1,7 @@
+{
+  "rename": "Rename",
+  "title": "Rename {{participantName}}",
+  "description": "You can rename the participant by entering a new name in the text field.",
+  "inputLabel": "Enter new display name",
+  "submitButton": "Rename"
+}
