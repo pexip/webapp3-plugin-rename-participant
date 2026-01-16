@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0]
+
+### Added
+
+- Internationalization (i18n) support with i18next
+- Translation files for English (en), Dutch (nl), and German (de)
+- Dynamic language switching via plugin.events.languageSelect
+- Development server configuration with Vite proxy support
+
+### Changed
+
+- All UI labels and form text now use translation keys
+- Form validation to check for both undefined and empty string values
+- Updated dependencies to latest versions
+
+### Fixed
+
+- Updated ESLint configuration to remove 'utils' from ignored paths
+
 ## [1.1.2]
 
 ### Fixed

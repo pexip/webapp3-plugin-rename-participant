@@ -3,7 +3,7 @@
 This plugin allows hosts to rename participants in the participant list. When
 the host clicks the "Rename Participant" entry in the participant action menu, a
 modal appears. The new name can be provided and will be set to the related
-patient.
+participant.
 
 ## How to use
 
@@ -11,7 +11,7 @@ A additional entry appears in the participant action menu in participant list.
 
 <div align='center'>
 
-![add cart video button](./docs/images/participant_action.png)
+![rename item](./docs/images/participant_action.png)
 
 </div>
 
@@ -19,7 +19,7 @@ This item opens a dialog to rename to participant.
 
 <div align='center'>
 
-![select department](./docs/images/rename_participant.png)
+![rename modal](./docs/images/rename_participant.png)
 
 </div>
 
@@ -27,11 +27,25 @@ Provide the new name and click rename.
 
 <div align='center'>
 
-![select department](./docs/images/renamed_participant.png)
+![renamed participant](./docs/images/renamed_participant.png)
 
 </div>
 
 The applied name will be shown in participant list
+
+## Internationalization
+
+Path: /public/loclales/
+
+```json
+{
+  "rename": "Rename",
+  "title": "Rename {{participantName}}",
+  "description": "You can rename the participant by entering a new name in the text field.",
+  "inputLabel": "Enter new display name",
+  "submitButton": "Rename"
+}
+```
 
 ## Limitations
 
@@ -43,8 +57,8 @@ The applied name will be shown in participant list
   See
   [Overlay Text API](https://docs.pexip.com/api_client/api_rest.htm#overlaytext)
 
-- SSO authenticated participants can not be renamed. In this case the entry does
-  not appear for these participants.
+- SSO authenticated participants can not be renamed for security reasons. 
+  In this case the rename item does not appear for these participants.
 
 ## Run for development
 
