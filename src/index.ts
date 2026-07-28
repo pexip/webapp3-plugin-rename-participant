@@ -18,6 +18,10 @@ let participantsList: InfinityParticipant[] = []
 // The participant object of the user itself
 let userParticipant: InfinityParticipant | null = null
 
+// Names assigned by the chair, kept for the whole call so they can be
+// re-applied when a participant moves between rooms (e.g. into a breakout).
+const renamedNames = new Map<ParticipantID, string>()
+
 // Initialize i18n before using it
 await initI18n()
 
@@ -73,11 +77,26 @@ const applySetup = async (): Promise<void> => {
           participantUuid: clickedParticipant.participantUuid,
           text: name
         })
+        renamedNames.set(clickedParticipant.participantUuid, name)
       }
     })
   } else {
     // Synchronize the participant action with the latest participants
     await renameAction.update(getSetup())
+  }
+}
+
+// Re-apply the assigned overlay name if the participant's current overlay
+// text does not already match it. The mismatch guard also prevents an update
+// loop: our own setTextOverlay call produces an Update activity which is then
+// re-processed, but the values now match so no further call is made.
+const reapplyName = async (participant: InfinityParticipant): Promise<void> => {
+  const desired = renamedNames.get(participant.uuid)
+  if (desired !== undefined && participant.overlayText !== desired) {
+    await plugin.conference.setTextOverlay({
+      participantUuid: participant.uuid,
+      text: desired
+    })
   }
 }
 
@@ -95,28 +114,46 @@ await applySetup()
 
 // Update setup when participants change
 plugin.events.participantsActivities.add(async (roomParticipantActivities) => {
-  roomParticipantActivities.forEach((roomParticipantActivity) => {
-    const { roomId, activity } = roomParticipantActivity
+  for (const { roomId, activity } of roomParticipantActivities) {
+    const activityType = getActivityType(activity)
+    const { participant } = activity
 
-    if (roomId !== 'main') {
-      return
+    // Re-apply a previously assigned name whenever the participant reappears
+    // in ANY room (main or breakout). Chair-only; guest clients hold no names.
+    if (
+      userParticipant?.role === 'chair' &&
+      (activityType === ParticipantActivities.Join ||
+        activityType === ParticipantActivities.Update)
+    ) {
+      try {
+        // eslint-disable-next-line no-await-in-loop -- Re-apply names sequentially, one activity at a time
+        await reapplyName(participant)
+      } catch (error) {
+        // eslint-disable-next-line no-console -- Intended error surface for a failed overlay re-apply
+        console.error('Failed to re-apply overlay name', error)
+      }
     }
-    switch (getActivityType(activity)) {
+
+    // Maintain the main-room participant list that drives the rename button
+    if (roomId !== 'main') {
+      continue
+    }
+    switch (activityType) {
       case ParticipantActivities.Join:
-        participantsList.push(activity.participant)
+        participantsList.push(participant)
         break
       case ParticipantActivities.Leave:
         participantsList = participantsList.filter(
-          (p) => p.uuid !== activity.participant.uuid
+          (p) => p.uuid !== participant.uuid
         )
         break
       case ParticipantActivities.Update:
         participantsList = participantsList.map((p) =>
-          p.uuid === activity.participant.uuid ? activity.participant : p
+          p.uuid === participant.uuid ? participant : p
         )
         break
     }
-  })
+  }
   await applySetup()
 })
 
