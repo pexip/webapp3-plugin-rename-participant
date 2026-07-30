@@ -154,3 +154,15 @@ dev server:
   permissions are also uncertain).
 - Reducing the ~10s breakout re-apply latency — established as Infinity's
   breakout call-setup time, not plugin-controllable.
+
+## Implementation notes (2026-07-30)
+
+- Implemented directly on `feat/sticky-rename-breakouts` (no separate plan doc,
+  per request); `npm run lint` and `npm run build` pass.
+- The learn rule was extracted into a `learnName` helper to stay within the
+  linter's complexity limit for the activities handler.
+- The breakout re-apply checks the `sendRequest` HTTP status and throws on a
+  non-2xx (surfaced via the activities-loop catch → `console.error`), so breakout
+  write failures are logged rather than silently ignored.
+- A teammate-facing summary lives in
+  `docs/breakout-rename-engineering-review.md`.

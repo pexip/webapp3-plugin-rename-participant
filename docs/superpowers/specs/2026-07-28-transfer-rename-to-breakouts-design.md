@@ -130,3 +130,21 @@ Verification is manual against a Pexip Infinity dev server (`npm start`):
   existing plugin limitation).
 - Persisting names across full disconnect/rejoin (a rejoin yields a new `uuid`).
 - Introducing an automated test framework.
+
+## Post-implementation outcome (2026-07-30)
+
+Runtime testing corrected this design:
+
+- **Assumption 1 (stable `uuid`) was FALSE.** A participant's `uuid` is
+  regenerated on every room move. Identity is now keyed by
+  `uri` → `displayName` → `uuid` (`getIdentity`) instead of `uuid`.
+- **Assumption 2 (activities reach breakout rooms) was TRUE.**
+- **New finding:** `setTextOverlay` targets the main-room endpoint only and
+  returns `404` for a participant inside a breakout. Breakout overlays are set
+  via the undocumented `conference.sendRequest` against
+  `breakouts/{roomId}/participants/{uuid}/overlaytext`; a non-2xx response is
+  surfaced as an error.
+
+The follow-on multi-chair/reload robustness and self-name persistence are
+specified in `2026-07-29-robust-shared-rename-state-design.md`. A teammate-facing
+summary of the whole change lives in `docs/breakout-rename-engineering-review.md`.
