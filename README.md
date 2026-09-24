@@ -33,6 +33,19 @@ Provide the new name and click rename.
 
 The applied name will be shown in participant list
 
+## Name persistence
+
+Renamed names are kept for the whole call and follow the participant:
+
+- Into breakout rooms, back to the main room, and between breakouts.
+- Regardless of which host performs the move, and across a host reload or late
+  join — each host's plugin learns the assigned names by observing the overlay
+  text that Infinity replicates to every client.
+
+When a host renames **themselves**, the name is also saved in the browser
+(reusing Web App 3's own `infinity-connect:displayName` value) so their next
+join uses it.
+
 ## Internationalization
 
 Path: /public/loclales/
@@ -49,16 +62,24 @@ Path: /public/loclales/
 
 ## Limitations
 
-- Currently entries in participant menu do not support icons when added by
+- SSO authenticated participants can not be renamed for security reasons. In
+  this case the rename item does not appear for these participants.
+
+- When a participant is moved into a breakout room, Infinity rebuilds their
+  call, so their original name shows for a few seconds before the assigned name
+  is re-applied. This delay is on the Infinity side and cannot be avoided by the
   plugin.
-- Technically the overlay_text is overwritten and shown in the participant list,
-  the actual display name does not change.
 
-  See
-  [Overlay Text API](https://docs.pexip.com/api_client/api_rest.htm#overlaytext)
+- Setting the overlay for a participant already inside a breakout room uses an
+  internal Web App 3 request (`conference.sendRequest`); there is no public
+  plugin API for this yet, so it may need revisiting on future
+  `@pexip/plugin-api` versions.
 
-- SSO authenticated participants can not be renamed for security reasons. 
-  In this case the rename item does not appear for these participants.
+- Participants without a URI (some anonymous guests) are matched by display
+  name, so two participants sharing a display name could receive the same
+  renamed name. SIP / authenticated participants are matched exactly.
+
+- Persisting a self-chosen name across sessions applies to hosts only.
 
 ## Run for development
 
