@@ -13,9 +13,9 @@
   "license": "Apache-2.0",
   "type": "module",
   "dependencies": {
-    "@pexip/plugin-api": "22.1.0",
-    "i18next": "^25.7.3",
-    "i18next-http-backend": "^3.0.2"
+    "@pexip/plugin-api": "22.4.1",
+    "i18next": "^27.1.3",
+    "i18next-http-backend": "^4.0.10"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
@@ -23,7 +23,7 @@
     "eslint-config-love": "^158.0.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.10.1",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vite": "^8.3.8",
     "vite-plugin-mkcert": "^2.1.0"
   }
