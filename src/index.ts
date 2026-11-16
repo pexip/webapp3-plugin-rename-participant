@@ -55,9 +55,11 @@ const applySetup = async (): Promise<void> => {
   }
 
   if (renameAction === null) {
-    renameAction = await plugin.ui.addButton(getSetup())
+    const button = await plugin.ui.addButton(getSetup())
+    // eslint-disable-next-line require-atomic-updates -- Only called sequentially from plugin events
+    renameAction = button
 
-    renameAction.onClick.add(async (clickedParticipant) => {
+    button.onClick.add(async (clickedParticipant) => {
       const clickedParticipantName =
         participantsList.find(
           (participant) =>
