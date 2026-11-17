@@ -56,7 +56,6 @@ const applySetup = async (): Promise<void> => {
 
   if (renameAction === null) {
     const button = await plugin.ui.addButton(getSetup())
-    // eslint-disable-next-line require-atomic-updates -- Only called sequentially from plugin events
     renameAction = button
 
     button.onClick.add(async (clickedParticipant) => {
@@ -69,7 +68,6 @@ const applySetup = async (): Promise<void> => {
       const input = await plugin.ui.showForm(RenameForm(clickedParticipantName))
       const { name } = input
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Form input may return undefined if form is closed
       if (name !== undefined && name !== '') {
         await plugin.conference.setTextOverlay({
           participantUuid: clickedParticipant.participantUuid,
